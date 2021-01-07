@@ -18,10 +18,18 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import metrics 
 
 
-iris = datasets.load_iris()
-X = np.array(iris.data)
-y = iris.target
-print(type(X[0]))
-print(type(y))
-print('sql执行成功')
+def number():
+    conn=pymysql.connect('127.0.0.1','root','9705165')
+    conn.select_db('hdzz')
+    cur=conn.cursor()
+    datax=[]
+    datay=[]
+    cur.execute("select * from number;")
+    res=cur.fetchall()
+    for i in range(len(res)):
+        datax.append([res[i][1]])
+        datay.append(res[i][2])
+    datay=np.array(datay)
+    print(datay)
+number()
 

@@ -1,7 +1,7 @@
-import time 
+# import time 
 import numpy as np 
-import pandas as pd
-import matplotlib. pyplot as plt
+# import pandas as pd
+# import matplotlib. pyplot as plt
 from sklearn import cluster, datasets 
 from sklearn.decomposition  import PCA
 from sklearn.neighbors import kneighbors_graph
@@ -10,7 +10,7 @@ from sklearn import metrics
 import pymysql
 
 #载入iris数据集
-def loadiris():
+def load_iris():
     conn=pymysql.connect('127.0.0.1','root','9705165')
     conn.select_db('hdzz')
     cur=conn.cursor()
@@ -25,7 +25,7 @@ def loadiris():
         a=np.array(a)
         X.append(a)
         y.append(res[i][5])
-    return(np.array(X),np.array(y))
+    return np.array(X),np.array(y)
 
 def cluster1(X,y):
     a={}
@@ -66,18 +66,18 @@ def cluster1(X,y):
         r=[]
         g=[]
         b=[]
-        t0 = time.time() #time()函数返回当前时间的时间戳
+        # t0 = time.time() #time()函数返回当前时间的时间戳
         algorithm.fit(X)
-        t1 = time.time()
+        # t1 = time.time()
         #hasattr（）函数用于判断对象是否包含对应的属性
         if hasattr(algorithm, 'labels_'):
             y_pred = algorithm.labels_.astype(np.int)
         else:
             y_pred = algorithm.predict(x)
             
-        if hasattr(algorithm, 'cluster_centers_'):
-            centers = algorithm.cluster_centers_
-            center_colors = colors[:len(centers)]
+        # if hasattr(algorithm, 'cluster_centers_'):
+            # centers = algorithm.cluster_centers_
+            # center_colors = colors[:len(centers)]
             
         for i in range(len(colors[y_pred].tolist())):   #循环获取聚类结果的各个点的x,y,color
             if colors[y_pred].tolist()[i] == 'r':
@@ -91,7 +91,7 @@ def cluster1(X,y):
         num.append(metrics.v_measure_score(y,y_pred))
     return x,a,num
 
-def irisdatascatter1(X_dr,y):
+def iris_data_scatter1(X_dr,y):
     b={}
     for j in range(3):
         a=[]

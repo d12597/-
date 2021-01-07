@@ -6,8 +6,10 @@ import threading
 import time
 import pymysql
 from ariori import apriori,draw,loadDataSet
-from mysql import mysqltest,mysqlapriori,mysqlnumber,mysqliris
-from iris import loadiris,cluster1,irisdatascatter1
+from mysql import mysql_test,mysql_apriori,mysql_number,mysql_iris
+from iris import load_iris,cluster1,iris_data_scatter1
+from tree import tree
+from number import load_number,number
 
 # configurations
 DEBUG = False
@@ -31,7 +33,7 @@ def test():
     data = request.get_json(silent=True)
     x = data['firstName']
     x = int(x)
-    a=mysqltest(x)
+    a=mysql_test(x)
     print(x)
     jobs[0]=a    
     print (jobs)
@@ -40,17 +42,20 @@ def test():
 @app.route('/testget', methods=['get'])
 def testget():    
     ad=loadDataSet()
-    aprioridata=mysqlapriori()
+    apriori_data=mysql_apriori()
     L, supportData = apriori(ad,minSupport=0.2)
-    aprioridraw=draw(L[1],supportData)
-    irisdata=mysqliris()
-    X,y = loadiris()
-    x,irisresultscatter,barnum = cluster1(X,y)
-    irisdatascatter=irisdatascatter1(x,y)
-    numberdata=mysqlnumber()
-    return jsonify({'aprioridata':aprioridata,'aprioridraw':aprioridraw
-                    ,'numberdata':numberdata
-                    ,'irisdata':irisdata,'irisdatascatter':irisdatascatter,'barnum':barnum,'irisresultscatter':irisresultscatter
+    apriori_draw=draw(L[1],supportData)
+    iris_data=mysql_iris()
+    X,y = load_iris()
+    x,iris_result_scatter,bar_num = cluster1(X,y)
+    iris_data_scatter=iris_data_scatter1(x,y)
+    number_data=mysql_number()
+    tree(X,y)
+    x,y=load_number()
+    inlier,outlier,test_data,l1,l2,l3,l4=number(x,y)
+    return jsonify({'aprioridata':apriori_data,'aprioridraw':apriori_draw
+                    ,'numberdata':number_data,"inlier":inlier,'outlier':outlier,'test_data':test_data,'l1':l1,'l2':l2,'l3':l3,'l4':l4
+                    ,'irisdata':iris_data,'irisdatascatter':iris_data_scatter,'barnum':bar_num,'irisresultscatter':iris_result_scatter
                     })
 
 if __name__ == '__main__':

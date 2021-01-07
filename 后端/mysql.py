@@ -6,7 +6,7 @@ Created on Mon Jan  4 20:12:19 2021
 """
 import pymysql
 import os
-from sklearn import cluster, datasets 
+from sklearn import datasets 
 import numpy as np 
 
 def load_text():
@@ -99,7 +99,7 @@ def load_apriori():
     conn.close()
     print('sql执行成功')
 
-def mysqltest(x):
+def mysql_test(x):
     a={}
     conn=pymysql.connect('localhost','root','9705165')
     conn.select_db('hdzz')
@@ -117,7 +117,7 @@ def mysqltest(x):
     print('sql执行成功')
     return a
 
-def mysqlapriori():
+def mysql_apriori():
     conn=pymysql.connect('10.120.51.229','root','123456')
     conn.select_db('hdzz')
     cur=conn.cursor()
@@ -136,7 +136,7 @@ def mysqlapriori():
     print('sql执行成功')
     return a
 
-def mysqlnumber():
+def mysql_number():
     conn=pymysql.connect('10.120.51.229','root','123456')
     conn.select_db('hdzz')
     cur=conn.cursor()
@@ -155,7 +155,7 @@ def mysqlnumber():
     print('sql执行成功')
     return a
 
-def mysqliris():
+def mysql_iris():
     conn=pymysql.connect('10.120.51.229','root','123456')
     conn.select_db('hdzz')
     cur=conn.cursor()
