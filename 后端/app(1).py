@@ -7,6 +7,7 @@ import time
 import pymysql
 from ariori import apriori,draw,loadDataSet
 from mysql import mysqltest,mysqlapriori,mysqlnumber,mysqliris
+from iris import loadiris,cluster1,irisdatascatter1
 
 # configurations
 DEBUG = False
@@ -42,11 +43,15 @@ def testget():
     aprioridata=mysqlapriori()
     L, supportData = apriori(ad,minSupport=0.2)
     aprioridraw=draw(L[1],supportData)
-    numberdata=mysqlnumber()
     irisdata=mysqliris()
+    X,y = loadiris()
+    x,irisresultscatter,barnum = cluster1(X,y)
+    irisdatascatter=irisdatascatter1(x,y)
+    numberdata=mysqlnumber()
     return jsonify({'aprioridata':aprioridata,'aprioridraw':aprioridraw
                     ,'numberdata':numberdata
-                    ,'irisdata':irisdata})
+                    ,'irisdata':irisdata,'irisdatascatter':irisdatascatter,'barnum':barnum,'irisresultscatter':irisresultscatter
+                    })
 
 if __name__ == '__main__':
 

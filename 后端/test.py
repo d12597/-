@@ -18,24 +18,10 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import metrics 
 
 
-conn=pymysql.connect('10.120.51.229','root','123456')
-conn.select_db('hdzz')
-cur=conn.cursor()
-a=[]
-for i in range(10):
-    b={}
-    b.update({'id':i})
-    for j in range(1,5):
-        cur.execute("select item%d from iris where id = %d;"%(j,i))
-        res=cur.fetchone()
-        b.update({"item%d"%j:res[0]})
-    cur.execute("select target from iris where id = %d;"%i)
-    res=cur.fetchone()
-    b.update({"target":res[0]})
-    a.append(b)
-print(a)
-cur.close()
-conn.commit()
-conn.close()
-
+iris = datasets.load_iris()
+X = np.array(iris.data)
+y = iris.target
+print(type(X[0]))
+print(type(y))
+print('sql执行成功')
 

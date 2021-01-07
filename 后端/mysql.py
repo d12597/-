@@ -169,7 +169,12 @@ def mysqliris():
             b.update({"item%d"%j:res[0]})
         cur.execute("select target from iris where id = %d;"%i)
         res=cur.fetchone()
-        b.update({"target":res[0]})
+        if res[0] == 0:
+            b.update({"target":'山鸢尾'})
+        if res[0] == 1:
+            b.update({"target":'变色鸢尾'})
+        if res[0] == 2:
+            b.update({"target":'维吉尼亚鸢尾'})
         a.append(b)
     cur.close()
     conn.commit()
