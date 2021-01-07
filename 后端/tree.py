@@ -5,6 +5,10 @@ from sklearn.tree import export_graphviz
 # from sklearn.metrics import precision_score,  recall_score, f1_score
 # import matplotlib.pyplot as plt  
 import graphviz
+import os
+import fitz
+
+
 
 def tree(x,y):
     x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)
@@ -12,39 +16,28 @@ def tree(x,y):
     gtree_clf = DecisionTreeClassifier(criterion='gini')
     etree_clf.fit(x_train, y_train)
     gtree_clf.fit(x_train, y_train)
-    # export_graphviz( 
-    #         gtree_clf,
-    #         out_file="C:/Users/80686/Desktop/iris_tree.dot",
-    #         feature_names=iris.feature_names,
-    #         class_names=iris.target_names,
-    #         rounded=True,
-    #         filled=True
-    #     )
-    
-    # gscores = cross_val_score(gtree_clf, x_test, y_test, cv=5) 
-    # escores = cross_val_score(etree_clf, x_test, y_test, cv=5) 
-    # print('gnin:',gscores) 
-    # print('entropy',escores) 
-    
-    # gy_test_pred = gtree_clf.predict(x_test)
-    # gtest_precision = precision_score(y_test, gy_test_pred,average='micro')
-    # gtest_recall = recall_score(y_test, gy_test_pred,average='micro')
-    # gtest_f1 = f1_score(y_test, gy_test_pred,average='micro')
-    
-    # ey_test_pred = etree_clf.predict(x_test)
-    # etest_precision = precision_score(y_test,ey_test_pred,average='micro')
-    # etest_recall = recall_score(y_test, ey_test_pred,average='micro')
-    # etest_f1 = f1_score(y_test, ey_test_pred,average='micro')
-    # l1=['ginitp','entropytp','entropyre','ginire','ginif1','entropyf1']
-    # l2=[]
-    # l2.append(gtest_precision)
-    # l2.append(etest_precision)
-    # l2.append(gtest_recall)
-    # l2.append(etest_recall)
-    # l2.append(gtest_f1)
-    # l2.append(etest_f1)
-    # print(l2)
-    # plt.bar(range(len(l1)), l2,tick_label=l1)  
     dot_data = export_graphviz(gtree_clf,out_file=None)
     graph = graphviz.Source(dot_data)
-    graph.render("tree")  #tree是我想要命名的pdf名称
+    graph.render("tree")  #tree是命名的pdf名称
+
+def get_file(pdf_dir):
+    docunames = os.listdir()
+    for docuname in docunames:
+        if os.path.splitext(docuname)[1] == '.pdf':#目录下包含.pdf的文件
+            pdf_dir.append(docuname)
+    return pdf_dir
+            
+def conver_img(pdf_dir):
+    for pdf in pdf_dir:
+        doc = fitz.open(pdf)
+        pdf_name = os.path.splitext(pdf)[0]
+        for pg in range(doc.pageCount):
+            page = doc[pg]
+            rotate = int(0)
+            # 每个尺寸的缩放系数为2，这将为我们生成分辨率提高四倍的图像。
+            zoom_x = 2.0
+            zoom_y = 2.0
+            trans = fitz.Matrix(zoom_x, zoom_y).preRotate(rotate)
+            pm = page.getPixmap(matrix=trans, alpha=False)
+            pm.writePNG('%s.png' % pdf_name)
+            

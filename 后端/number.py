@@ -209,5 +209,3 @@ def number(x,y):
     # plt.title("回归模型")
     # plt.show()#显示图像
     return inlier,outlier,a1,l1,l2,l3,l4
-x,y=load_number()
-number(x,y)
